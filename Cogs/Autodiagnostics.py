@@ -1,6 +1,8 @@
 import logging
 import logging.handlers
 import os
+import sys
+import traceback
 
 from discord.ext import commands
 
@@ -17,7 +19,7 @@ class Autodiagnostics(commands.Cog):
 
     def configure_logger(self):
 
-        rfh = logging.handlers.RotatingFileHandler(
+        rotating_file_handler = logging.handlers.RotatingFileHandler(
             filename=self.LOG_FILE,
             mode='a',
             maxBytes=20*1024*1024,
@@ -26,19 +28,27 @@ class Autodiagnostics(commands.Cog):
             delay=0
         )
 
+        console_logging_handler = logging.StreamHandler(
+            stream=sys.stdout
+        )
+
         logging.basicConfig(
             level=self.LOG_LEVEL,
             format=self.LOGGING_FORMAT,
             datefmt=self.DATE_FORMAT,
-            handlers=[rfh]
+            handlers=[
+                rotating_file_handler,
+                console_logging_handler
+            ]
         )
-
-        logging.debug('This message should go to the log file')
-        logging.info('So should this')
-        logging.warning('And this, too')
-        logging.error('And non-ASCII stuff, too, like Øresund and Malmö')
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'{self.bot.user.name} has connected to Discord!')
-        logging.info(f'{self.bot.user.name} has connected to Discord!')
+        logging.info(f"Connected to Discord as user '{self.bot.user.name}'.")
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, exception):
+        try:
+            raise exception
+        except Exception as e:
+            logging.exception(f"Error during command '{ctx.command}'.")
