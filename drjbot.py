@@ -8,16 +8,25 @@ from Cogs import (
     Weather
 )
 
-dotenv.load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_DEFAULT_GUILD')
+# The bot code relies on several environment variables.
+# The supported variables are listed in 'sample.env'.
+# The actual environment variables can be passed in a file
+# named '.env' placed next to 'drjbot.py'.
+DOTENV_FILE = ".env"
+dotenv.load_dotenv(DOTENV_FILE)
 
-bot = commands.Bot(command_prefix='!')
+# The bot's command prefix defaults to '!' but can be overridden by an env var.
+bot = commands.Bot(command_prefix=os.getenv('BOT_COMMAND_PREFIX', '!'))
+
+# Set up logging and global error handling.
 bot.add_cog(Autodiagnostics.Autodiagnostics(bot))
-bot.add_cog(Weather.Weather(bot))
 
 @bot.event
 async def on_error(event, *args, **kwargs):
     logging.exception(f"Error during '{event}' event.")
 
-bot.run(TOKEN)
+# Attach the remaining cogs.
+bot.add_cog(Weather.Weather(bot))
+
+# Start the bot client and connect to Discord.
+bot.run(os.getenv('DISCORD_API_TOKEN'))

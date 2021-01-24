@@ -2,11 +2,14 @@ import logging
 import logging.handlers
 import os
 import sys
-import traceback
 
 from discord.ext import commands
 
+
 class Autodiagnostics(commands.Cog):
+    """
+    This cog sets up the bot's logging system and tracks its life cycle.
+    """
 
     def __init__(self, bot):
         self.LOGGING_FORMAT = '[%(asctime)s] %(levelname)s %(message)s'
@@ -44,10 +47,19 @@ class Autodiagnostics(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+        """
+        This event occurs once when the bot starts and has successfully connected to Discord.
+        """
         logging.info(f"Connected to Discord as user '{self.bot.user.name}'.")
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, exception):
+        """
+        This event occurs in response to any error in a bot command.
+        Other exceptions that arise during events will be handled
+        by the bot client's 'on_error' handler defined in 'drjbot.py'.
+        """
+        # Looks like we need to re-raise the exception to get it through into the logs.
         try:
             raise exception
         except Exception as e:
