@@ -55,6 +55,7 @@ class Weather(commands.Cog):
 
         return self.towns_by_name[most_probable_key], matching_percentage
     
+
     @commands.command()
     async def weather(self, ctx, *, town: str = None):
         """
@@ -83,7 +84,16 @@ class Weather(commands.Cog):
             await ctx.send(f"Sorry <@{ctx.author.id}>, I couldn't identify a town based on that input.")
             return
 
+        # Seems like we have a reasonable guess for the town the user asked about.
+        town_resolution_comment = f"<@{ctx.author.id}>, here's the weather forecast for {target_town['name']}."
         if matching_percentage < 100:
-            await ctx.send(f"<@{ctx.author.id}>, I'm only {matching_percentage}% sure, but seems like you asked for the weather in {target_town['name']}.")
-        else:
-            await ctx.send(f"<@{ctx.author.id}>, I'm quite certain you asked for the weather in {target_town['name']}.")
+            town_resolution_comment = f"<@{ctx.author.id}>, I'm {matching_percentage}% sure you meant a town called {target_town['name']}, here's their weather forecast."
+
+        weather_forecast = await self.fetch_weather_forecast(target_town)
+        message = f"{town_resolution_comment}\n```\n{weather_forecast}```"
+
+        await ctx.send(message)
+
+
+    async def fetch_weather_forecast(self, target_town):
+        return "Some\nlines\nof randomness.\n"
