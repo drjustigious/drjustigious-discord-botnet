@@ -62,7 +62,12 @@ class Autodiagnostics(commands.Cog):
         # Looks like we need to re-raise the exception to get it through into the logs.
         try:
             raise exception
+
         except commands.errors.CommandNotFound:
             await ctx.send(f"Sorry <@{ctx.author.id}>, I did not recognize your command. Please type `!help` to see what I can do for you.")
+
+        except commands.errors.BadArgument:
+            await ctx.send(f"Sorry <@{ctx.author.id}>, something about the parameters of your command made no sense to me. Please type `!help` to see what I can do for you.")            
+
         except Exception as e:
             logging.exception(f"Error during command '{ctx.command}'.")
