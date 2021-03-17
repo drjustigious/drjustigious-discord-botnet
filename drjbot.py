@@ -26,7 +26,12 @@ async def on_error(event, *args, **kwargs):
     logging.exception(f"Error during '{event}' event.")
 
 # Attach the remaining cogs.
-bot.add_cog(Weather.Weather(bot))
+INSTALLED_COGS = [
+    Weather.Weather
+]
+
+for cog in INSTALLED_COGS:
+    bot.add_cog(cog(bot))
 
 # Start the bot client and connect to Discord.
 bot.run(os.getenv('DISCORD_API_TOKEN'))

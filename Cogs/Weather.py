@@ -73,7 +73,7 @@ class Weather(commands.Cog):
         """
 
         if not town:
-            await ctx.send(f"<@{ctx.author.id}>, please give the name of the town whose weather you're interested in. Type `{self.bot.command_prefix}help weather` for details.")
+            await ctx.send(f"<@{ctx.author.id}>, please give the name of the town you'd like a weather report for. Type `{self.bot.command_prefix}help weather` for details.")
             return
 
         if not self.towns_by_name:
