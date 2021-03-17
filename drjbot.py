@@ -5,8 +5,17 @@ import logging
 
 from Cogs import (
     Autodiagnostics,
-    Weather
+    Weather,
+    Games
 )
+
+# List here all cogs to install except for Autodiagnostics which is
+# always needed and installed.
+INSTALLED_COGS = [
+    Weather.Weather,
+    Games.Games
+]
+
 
 # The bot code relies on several environment variables.
 # The supported variables are listed in 'sample.env'.
@@ -26,10 +35,6 @@ async def on_error(event, *args, **kwargs):
     logging.exception(f"Error during '{event}' event.")
 
 # Attach the remaining cogs.
-INSTALLED_COGS = [
-    Weather.Weather
-]
-
 for cog in INSTALLED_COGS:
     bot.add_cog(cog(bot))
 
