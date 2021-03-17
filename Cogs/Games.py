@@ -9,6 +9,7 @@ class Games(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.previous_choices = []
 
     @commands.command()
     async def rolldice(self, ctx, *, num_dice: int = 1):
@@ -98,4 +99,51 @@ class Games(commands.Cog):
         # Send the results as a Discord message.
         joined_results = "\n".join(drawn_cards)
         message = f"<@{ctx.author.id}> The cards say:\n{joined_results}"
+        await ctx.send(message)
+
+
+    @commands.command()
+    async def choose(self, ctx, *, choices: str = ""):
+        """
+        Randomly choose one of the given strings.
+
+        Arguments
+        ---------
+        choices: string
+            A comma-separated list of items to choose from. Optional. Omit to choose again from the previous options.
+
+        Example
+        -------
+        !choose skeld, mirahq, polus
+        """
+
+        # Parse the given choices assuming comma separation, but fall back to space separation
+        # if there aren't any commas in the input string.
+        list_choices = choices.split(",")
+        if len(list_choices) == 1:
+            list_choices = choices.split(" ")
+
+        # Remove whitespace and only retain non-empty choices.
+        list_choices = [item.strip() for item in list_choices if item.strip()]
+
+        logging.debug(f"CHOICES: {list_choices}")
+
+        # If no new set of choices was given, try to choose again from the previous ones.
+        if not list_choices:
+            if not self.previous_choices:
+                message = f"<@{ctx.author.id}> Please give me a list of items to choose from. Type `!help` for details."
+                await ctx.send(message)
+                return
+
+            choice = random.choice(self.previous_choices)
+            options = ", ".join(self.previous_choices)
+            message = f"<@{ctx.author.id}> I choose `{choice}`.\nThe options I remember were `{options}`."
+            await ctx.send(message)
+            return
+
+        # Looks like we had a new set of choices. Remember those for later.
+        self.previous_choices = list_choices
+
+        choice = random.choice(list_choices)
+        message = f"<@{ctx.author.id}> I choose `{choice}`."
         await ctx.send(message)
