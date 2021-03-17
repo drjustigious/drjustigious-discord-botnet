@@ -5,6 +5,7 @@ import logging
 
 from Cogs import (
     Autodiagnostics,
+    Experimental,
     Weather,
     Games
 )
@@ -13,7 +14,8 @@ from Cogs import (
 # always needed and installed.
 INSTALLED_COGS = [
     Weather.Weather,
-    Games.Games
+    Games.Games,
+    Experimental.Experimental
 ]
 
 

@@ -64,10 +64,10 @@ class Autodiagnostics(commands.Cog):
             raise exception
 
         except commands.errors.CommandNotFound:
-            await ctx.send(f"Sorry <@{ctx.author.id}>, I did not recognize your command. Please type `!help` to see what I can do for you.")
+            await ctx.send(f"Sorry {ctx.author.mention}, I did not recognize your command. Please type `!help` to see what I can do for you.")
 
         except commands.errors.BadArgument:
-            await ctx.send(f"Sorry <@{ctx.author.id}>, something about the parameters of your command made no sense to me. Please type `!help` to see what I can do for you.")            
+            await ctx.send(f"Sorry {ctx.author.mention}, something about the parameters of your command made no sense to me. Please type `!help` to see what I can do for you.")            
 
         except Exception as e:
             logging.exception(f"Error during command '{ctx.command}'.")

@@ -14,24 +14,25 @@ class Games(commands.Cog):
     @commands.command()
     async def rolldice(self, ctx, *, num_dice: int = 1):
         """
-        Roll the given number of 6-sided dice.
+        Roll a given number of 6-sided dice.
 
         Arguments
         ---------
         num_dice: int
             How many dice to roll. Must not exceed 50. Optional.
 
-        Example
+        Examples
         -------
+        !rolldice
         !rolldice 2
         """
         if num_dice < 1:
-            message = f"<@{ctx.author.id}> Please specify a positive number of dice to roll."
+            message = f"{ctx.author.mention} Please specify a positive number of dice to roll."
             await ctx.send(message)
             return
 
         if num_dice > self.MAX_DICE:
-            message = f"Sorry <@{ctx.author.id}>, I only have {self.MAX_DICE} dice to roll. Please specify a smaller number of dice."
+            message = f"Sorry {ctx.author.mention}, I only have {self.MAX_DICE} dice to roll. Please specify a smaller number of dice."
             await ctx.send(message)
             return
 
@@ -44,14 +45,16 @@ class Games(commands.Cog):
         ]
 
         joined_results = "\n".join(roll_results)
-        message = f"<@{ctx.author.id}> The dice say:\n{joined_results}"
+        message = f"{ctx.author.mention} The dice say:\n{joined_results}"
         await ctx.send(message)
 
 
     @commands.command()
     async def drawcards(self, ctx, *, num_cards: int = 1):
         """
-        Draw the specified number of cards from a full deck without Jokers.
+        Draw a specified number of playing cards.
+
+        The cards will be drawn from a standard 52-card deck (without Jokers).
 
         Arguments
         ---------
@@ -65,12 +68,12 @@ class Games(commands.Cog):
 
         # Validate the input.
         if num_cards < 1:
-            message = f"<@{ctx.author.id}> Please specify a positive number of cards to draw."
+            message = f"{ctx.author.mention} Please specify a positive number of cards to draw."
             await ctx.send(message)
             return        
 
         if num_cards > 52:
-            message = f"Sorry <@{ctx.author.id}>, I only have one deck of 52 cards to draw from. Please specify a smaller number of cards."
+            message = f"Sorry {ctx.author.mention}, I only have one deck of 52 cards to draw from. Please specify a smaller number of cards."
             await ctx.send(message)
             return        
 
@@ -98,7 +101,7 @@ class Games(commands.Cog):
 
         # Send the results as a Discord message.
         joined_results = "\n".join(drawn_cards)
-        message = f"<@{ctx.author.id}> The cards say:\n{joined_results}"
+        message = f"{ctx.author.mention} The cards say:\n{joined_results}"
         await ctx.send(message)
 
 
@@ -112,9 +115,10 @@ class Games(commands.Cog):
         choices: string
             A comma-separated list of items to choose from. Optional. Omit to choose again from the previous options.
 
-        Example
+        Examples
         -------
         !choose skeld, mirahq, polus
+        !choose
         """
 
         # Parse the given choices assuming comma separation, but fall back to space separation
@@ -131,13 +135,13 @@ class Games(commands.Cog):
         # If no new set of choices was given, try to choose again from the previous ones.
         if not list_choices:
             if not self.previous_choices:
-                message = f"<@{ctx.author.id}> Please give me a list of items to choose from. Type `!help` for details."
+                message = f"{ctx.author.mention} Please give me a list of items to choose from. Type `!help` for details."
                 await ctx.send(message)
                 return
 
             choice = random.choice(self.previous_choices)
             options = ", ".join(self.previous_choices)
-            message = f"<@{ctx.author.id}> I choose `{choice}`.\nThe options I remember were `{options}`."
+            message = f"{ctx.author.mention} I choose `{choice}`.\nThe options I remember were `{options}`."
             await ctx.send(message)
             return
 
@@ -145,5 +149,5 @@ class Games(commands.Cog):
         self.previous_choices = list_choices
 
         choice = random.choice(list_choices)
-        message = f"<@{ctx.author.id}> I choose `{choice}`."
+        message = f"{ctx.author.mention} I choose `{choice}`."
         await ctx.send(message)
