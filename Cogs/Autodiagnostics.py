@@ -17,11 +17,12 @@ class Autodiagnostics(commands.Cog):
         self.LOGGING_FORMAT = '[%(asctime)s] %(levelname)s %(message)s'
         self.DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
         self.LOG_FILE = os.getenv('LOG_FILE')
-        self.LOG_LEVEL = int(os.getenv('LOG_LEVEL'))
+        self.LOG_LEVEL = int(os.getenv('LOG_LEVEL', "20"))
 
         self.bot = bot
         self.bot.online_since = datetime.datetime.utcnow()
         self.bot.version_string = self.get_version_string()
+        self.bot.runtime_environment = os.getenv('RUNTIME_ENV_DESCRIPTION', "n/a")
         self.configure_logger()
 
     def configure_logger(self):

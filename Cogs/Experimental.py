@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.errors import BotMissingPermissions
 
 from HousebotUtilities import BotMentionHandlers
 
@@ -27,7 +28,9 @@ class Experimental(commands.Cog):
         The given message has mentioned the bot. Analyze it further and perhaps respond.
         """
         mention_handlers = [
-            BotMentionHandlers.identify_user
+            BotMentionHandlers.identify_user,
+            BotMentionHandlers.thanks,
+            BotMentionHandlers.greet  # Always set the greeting handler last since it matches lots of things.
         ]
 
         # Every handler is expected to return True if it did something with the message.

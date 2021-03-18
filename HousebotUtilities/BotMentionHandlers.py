@@ -2,6 +2,76 @@ import logging
 
 from . import UserIdentification
 
+
+async def greet(bot, message):
+    if message_is_greeting(message):
+        other_mentions = extract_other_mentions(bot, message)
+        if not other_mentions:
+            await message.channel.send(f"Greetings, {message.author.mention}.")
+        else:
+            await message.channel.send(f"Greetings, {other_mentions[0].mention}. Please type `!help` to see what I can do for you.")
+
+        return True
+
+    return False
+
+
+def message_is_greeting(message):
+    lowercase_message = message.content.strip().lower()
+    greetings = [
+        "hello",
+        "hi",
+        "greet",
+        "moi",
+        "moro",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "how are you",
+        "how do you do",
+        "welcome"
+    ]
+
+    return any(greeting in lowercase_message for greeting in greetings)        
+
+
+
+async def thanks(bot, message):
+    if message_is_thankyou(message):
+        await message.channel.send(f"You're welcome, {message.author.mention}.")
+        return True
+
+    if message_is_yourewelcome(message):
+        await message.channel.send(f"Thank you, {message.author.mention}.")
+        return True        
+
+    return False
+
+
+def message_is_thankyou(message):
+    lowercase_message = message.content.strip().lower()
+    greetings = [
+        "thanks",
+        "thank you",
+        "you have my gratitude",
+        "you have our gratitude",
+        "fuck you"
+    ]
+
+    return any(greeting in lowercase_message for greeting in greetings)
+
+
+def message_is_yourewelcome(message):
+    lowercase_message = message.content.strip().lower()
+    greetings = [
+        "you're welcome",
+        "my pleasure"
+    ]
+
+    return any(greeting in lowercase_message for greeting in greetings)
+
+
+
 async def identify_user(bot, message):
 
     deep_command = extract_deep_command(bot, message)
@@ -78,10 +148,6 @@ def is_command_to_identify_user(deep_command_words):
         "what the hell is ",
         "what the fuck is"
     ))    
-
-
-def construct_identification_message(bot, message):
-    pass
 
 
 def extract_other_mentions(bot, message):

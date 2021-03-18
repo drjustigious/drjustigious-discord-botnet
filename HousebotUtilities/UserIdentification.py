@@ -89,6 +89,7 @@ def identify_self(bot, message):
         "User ID": bot.user.id,
         "Account created": bot.user.created_at.strftime(DATETIME_FORMAT)+" UTC",
         "Code revision": bot.version_string,
+        "Environment": bot.runtime_environment,
         "Online since": bot.online_since.strftime(DATETIME_FORMAT)+" UTC",
         "Uptime": calculate_uptime(bot)
     }

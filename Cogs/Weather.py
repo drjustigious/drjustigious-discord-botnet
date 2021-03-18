@@ -52,7 +52,7 @@ class Weather(commands.Cog):
             self.towns_by_name.keys()
         )
 
-        logging.debug(f"The closest key match to the town name '{town_name}' was '{most_probable_key}' at {matching_percentage}% matching ratio.")
+        #logging.debug(f"The closest key match to the town name '{town_name}' was '{most_probable_key}' at {matching_percentage}% matching ratio.")
 
         return self.towns_by_name[most_probable_key], matching_percentage
     
@@ -71,27 +71,28 @@ class Weather(commands.Cog):
         -------
         !weather Turku
         """
+        async with ctx.typing():
 
-        if not town:
-            await ctx.send(f"{ctx.author.mention}, please give the name of the town you'd like a weather report for. Type `{self.bot.command_prefix}help weather` for details.")
-            return
+            if not town:
+                await ctx.send(f"{ctx.author.mention}, please give the name of the town you'd like a weather report for. Type `{self.bot.command_prefix}help weather` for details.")
+                return
 
-        if not self.towns_by_name:
-            await ctx.send(f"Sorry {ctx.author.mention}, I'm having problems accessing the weather report data right now.")
-            return
+            if not self.towns_by_name:
+                await ctx.send(f"Sorry {ctx.author.mention}, I'm having problems accessing the weather report data right now.")
+                return
 
-        target_town, matching_percentage = self.resolve_target_town(town)
-        if not target_town:
-            await ctx.send(f"Sorry {ctx.author.mention}, I couldn't identify a town based on that input.")
-            return
+            target_town, matching_percentage = self.resolve_target_town(town)
+            if not target_town:
+                await ctx.send(f"Sorry {ctx.author.mention}, I couldn't identify a town based on that input.")
+                return
 
-        # Seems like we have a reasonable guess for the town the user asked about.
-        town_resolution_comment = f"{ctx.author.mention} Here's the weather forecast for {target_town['name']}."
-        if matching_percentage < 100:
-            town_resolution_comment = f"{ctx.author.mention} I'm {matching_percentage}% sure you meant a town called {target_town['name']}, here's their weather forecast."
+            # Seems like we have a reasonable guess for the town the user asked about.
+            town_resolution_comment = f"{ctx.author.mention} Here's the weather forecast for {target_town['name']}."
+            if matching_percentage < 100:
+                town_resolution_comment = f"{ctx.author.mention} I'm {matching_percentage}% sure you meant a town called {target_town['name']}, here's their weather forecast."
 
-        weather_forecast = await self.fetch_weather_forecast(target_town)
-        message = f"{town_resolution_comment}\n```\n{weather_forecast}```"
+            weather_forecast = await self.fetch_weather_forecast(target_town)
+            message = f"{town_resolution_comment}\n```\n{weather_forecast}```"
 
         await ctx.send(message)
 
