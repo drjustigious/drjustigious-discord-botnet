@@ -130,8 +130,6 @@ class Games(commands.Cog):
         # Remove whitespace and only retain non-empty choices.
         list_choices = [item.strip() for item in list_choices if item.strip()]
 
-        logging.debug(f"CHOICES: {list_choices}")
-
         # If no new set of choices was given, try to choose again from the previous ones.
         if not list_choices:
             if not self.previous_choices:

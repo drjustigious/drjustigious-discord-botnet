@@ -2,6 +2,8 @@ import logging
 import logging.handlers
 import os
 import sys
+import datetime
+import subprocess
 
 from discord.ext import commands
 
@@ -15,9 +17,12 @@ class Autodiagnostics(commands.Cog):
         self.LOGGING_FORMAT = '[%(asctime)s] %(levelname)s %(message)s'
         self.DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
         self.LOG_FILE = os.getenv('LOG_FILE')
-        self.LOG_LEVEL = int(os.getenv('LOG_LEVEL'))
+        self.LOG_LEVEL = int(os.getenv('LOG_LEVEL', "20"))
 
         self.bot = bot
+        self.bot.online_since = datetime.datetime.utcnow()
+        self.bot.version_string = self.get_version_string()
+        self.bot.runtime_environment = os.getenv('RUNTIME_ENV_DESCRIPTION', "n/a")
         self.configure_logger()
 
     def configure_logger(self):
@@ -50,7 +55,8 @@ class Autodiagnostics(commands.Cog):
         """
         This event occurs once when the bot starts and has successfully connected to Discord.
         """
-        logging.info(f"Connected to Discord as user '{self.bot.user.name}'.")
+        self.bot.online_since = datetime.datetime.utcnow()
+        logging.info(f"Connected to Discord as user '{self.bot.user.name}' ({self.bot.user.id}).")
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, exception):
@@ -71,3 +77,12 @@ class Autodiagnostics(commands.Cog):
 
         except Exception as e:
             logging.exception(f"Error during command '{ctx.command}'.")
+
+
+    def get_version_string(self):
+        try:
+            version = subprocess.check_output(["git", "describe", "HEAD", "--always"]).strip()
+            return version.decode("utf-8") 
+        except Exception as e:
+            logging.exception("Error trying to figure out running code version.")
+            return "0.0.0"
