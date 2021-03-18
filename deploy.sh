@@ -48,4 +48,4 @@ sudo systemctl daemon-reload
 sudo systemctl status drj-housebot
 
 echo -e "\nDeployment complete."
-echo -e "Remember to edit .env, then start the bot by typing:\n  systemctl restart drj-housebot\n"
+echo -e "Remember to edit .env, then start the bot by typing:\n  sudo systemctl restart drj-housebot\n"
