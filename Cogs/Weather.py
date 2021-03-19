@@ -71,7 +71,7 @@ class Weather(commands.Cog):
         -------
         !weather Turku
         """
-        logging.info(f"Executing 'weather' for {ctx.author.name} (user {ctx.author.id}): '{ctx.content}'")
+        logging.info(f"Executing 'weather' for {ctx.author.name} (user {ctx.author.id}): '{ctx.message.content}'")
 
         async with ctx.typing():
 

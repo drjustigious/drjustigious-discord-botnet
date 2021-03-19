@@ -26,7 +26,7 @@ class Games(commands.Cog):
         !rolldice
         !rolldice 2
         """
-        logging.info(f"Executing 'rolldice' for {ctx.author.name} (user {ctx.author.id}): '{ctx.content}'")
+        logging.info(f"Executing 'rolldice' for {ctx.author.name} (user {ctx.author.id}): '{ctx.message.content}'")
 
         if num_dice < 1:
             message = f"{ctx.author.mention} Please specify a positive number of dice to roll."
@@ -67,7 +67,7 @@ class Games(commands.Cog):
         -------
         !drawcards 2
         """
-        logging.info(f"Executing 'drawcards' for {ctx.author.name} (user {ctx.author.id}): '{ctx.content}'")
+        logging.info(f"Executing 'drawcards' for {ctx.author.name} (user {ctx.author.id}): '{ctx.message.content}'")
 
         # Validate the input.
         if num_cards < 1:
@@ -123,7 +123,7 @@ class Games(commands.Cog):
         !choose skeld, mirahq, polus
         !choose
         """
-        logging.info(f"Executing 'choose' for {ctx.author.name} (user {ctx.author.id}): '{ctx.content}'")
+        logging.info(f"Executing 'choose' for {ctx.author.name} (user {ctx.author.id}): '{ctx.message.content}'")
 
         # Parse the given choices assuming comma separation, but fall back to space separation
         # if there aren't any commas in the input string.
