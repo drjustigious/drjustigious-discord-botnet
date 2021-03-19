@@ -1,3 +1,4 @@
+import logging
 import discord
 from discord.ext import commands
 from discord.ext.commands.errors import BotMissingPermissions
@@ -33,6 +34,8 @@ class Experimental(commands.Cog):
             BotMentionHandlers.greet  # Always set the greeting handler last since it matches lots of things.
         ]
 
+        logging.info(f"Handling mention by {message.author.name} (user {message.author.id}): '{message.content}'")
+
         # Every handler is expected to return True if it did something with the message.
         for handler in mention_handlers:
             if await handler(self.bot, message):
@@ -40,4 +43,4 @@ class Experimental(commands.Cog):
 
         # If none of the listed handlers got a grasp of the message,
         # output a default acknowledgement of the situation.
-        await message.channel.send(f"You mentioned me, {message.author.mention}.")
+        await message.channel.send(f"You mentioned me, {message.author.mention}. Please type `!help` to see what I can do for you.")
