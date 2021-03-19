@@ -15,7 +15,7 @@ class Experimental(commands.Cog):
     async def on_member_join(self, member):
         channel = member.guild.system_channel
         if channel is not None:
-            await channel.send(f"Greetings {member.mention}. Welcome to {member.guild.name}. I am the house bot, at your service. Please type `!help` to see what I can do for you.")
+            await channel.send(f"Greetings {member.mention}. Welcome to {member.guild.name}. I am the house bot **{self.bot.user.name}**, at your service. Please type `!help` to see what I can do for you.")
 
 
     @commands.Cog.listener()
