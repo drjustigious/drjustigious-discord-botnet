@@ -1,3 +1,4 @@
+import logging
 import discord
 from discord.ext import commands
 from discord.ext.commands.errors import BotMissingPermissions
@@ -14,7 +15,7 @@ class Experimental(commands.Cog):
     async def on_member_join(self, member):
         channel = member.guild.system_channel
         if channel is not None:
-            await channel.send(f"Greetings {member.mention}. Welcome to {member.guild.name}. I am the house bot, at your service. Please type `!help` to see what I can do for you.")
+            await channel.send(f"Greetings {member.mention}. Welcome to {member.guild.name}. I am the house bot **{self.bot.user.name}**, at your service. Please type `!help` to see what I can do for you.")
 
 
     @commands.Cog.listener()
@@ -33,6 +34,8 @@ class Experimental(commands.Cog):
             BotMentionHandlers.greet  # Always set the greeting handler last since it matches lots of things.
         ]
 
+        logging.info(f"Handling mention by {message.author.name} (user {message.author.id}): '{message.content}'")
+
         # Every handler is expected to return True if it did something with the message.
         for handler in mention_handlers:
             if await handler(self.bot, message):
@@ -40,4 +43,4 @@ class Experimental(commands.Cog):
 
         # If none of the listed handlers got a grasp of the message,
         # output a default acknowledgement of the situation.
-        await message.channel.send(f"You mentioned me, {message.author.mention}.")
+        await message.channel.send(f"You mentioned me, {message.author.mention}. Please type `!help` to see what I can do for you.")
