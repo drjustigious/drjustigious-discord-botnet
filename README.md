@@ -17,8 +17,13 @@ The following environment variables must be defined for the bot to run. They can
 
 There are also several other optional environment variables that can be defined to enable further functionality, e.g. related to using the OpenWeatherMap API. See `sample.env` for an up-to-date list of supported environment variables.
 
-## 2. Launching the bot
+## 2a. Launching the bot
 With the packages listed in *requirements.txt* installed in your current Python 3 virtual environment, just run `drjbot.py`.
 ```
 python ./drjbot.py
 ```
+
+## 2b. Deploying the bot as a systemd service
+The bot only needs a very small virtual machine (like an AWS EC2 t3.nano) around it to run. To set the bot up as a systemd service on a modern Ubuntu Server distro, run `deploy.sh` and follow the echoed instructions.
+
+(Tested in Ubuntu 20.04.2 LTS Server running on an AWS EC2 t3.nano instance.)
