@@ -4,6 +4,8 @@ A highly experimental Discord bot.
 > Based on this tutorial:
 > https://realpython.com/how-to-make-a-discord-bot-python/#how-to-make-a-discord-bot-in-the-developer-portal
 
+<img width="546" alt="bot-intro-screenshot" src="https://user-images.githubusercontent.com/44530293/114562467-3211ca00-9c77-11eb-87bf-07399eb25989.png">
+
 ---
 
 ## 1. Runtime environment setup
